@@ -1,0 +1,31 @@
+# Build folders
+Debug/
+Release/
+
+# Object and executable files
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+*.list
+
+# Temporary files
+*.tmp
+
+# IDE metadata (workspace specific)
+.metadata/
+
+# Optional launch files
+*.launch
+# EWARM project files
+EWARM/
+
+# Keil project files
+MDK-ARM/
+
+# IAR project files
+*.ewd
+*.ewp
+*.eww
