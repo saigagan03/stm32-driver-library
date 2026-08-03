@@ -285,7 +285,10 @@ Through this project:
 
 ---
 
-# Author
+## Author
 
-STM32F446 Register-Level Driver Library  
-Developed using STM32CubeIDE and CMSIS
+**Sai Gagan E**
+
+B.Tech Electrical Engineering
+
+MANIT Bhopal
