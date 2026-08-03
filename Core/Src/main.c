@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include"gpio_driver.h"
+#include "uart_driver.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -100,11 +101,46 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  GPIO_Output_Init(GPIOA,GPIO_PIN_5);
-  GPIO_Input_Init(GPIOC,GPIO_PIN_13,MY_GPIO_PULLUP);
-  GPIO_Interrupt_Init(GPIOC,GPIO_PIN_13,GPIO_FALLING_EDGE);
+//  GPIO_Output_Init(GPIOA,GPIO_PIN_5);
+//  GPIO_Input_Init(GPIOC,GPIO_PIN_13,MY_GPIO_PULLUP);
+//  GPIO_Interrupt_Init(GPIOC,GPIO_PIN_13,GPIO_FALLING_EDGE);
+  UART_Handle_t huart2;
+  huart2.Instance=USART2;
+  huart2.Init.Baudrate=115200;
+  huart2.Init.Mode=UART_MODE_TX_RX;
+  huart2.Init.Parity=UART_PARITY_NONE;
+  huart2.Init.Stopbits=UART_STOPBITS_1;
+  huart2.Init.Wordlength=UART_WORDLENGTH_8B;
+  UART_Init(&huart2);
+//    send string 1 time
+//  UART_SendString(&huart2,"Hello World My Name is E Sai Gagan\r\n");
+//  receive char 1 time
+//  char c=UART_ReceiveChar(&huart2);
+//  UART_SendString(&huart2,"\r\nYou Typed: ");
+//  UART_SendChar(&huart2,c);
+
   while (1)
   {
+//	  Receive Char many times
+//	  char c=UART_ReceiveChar(&huart2);
+//	  UART_SendString(&huart2,"\r\nYou Typed: ");
+//	  UART_SendChar(&huart2,c);
+//	  Receive String Many times
+	  char buffer[50];
+	  uint8_t i=0;
+	  while(1){
+		  char ch=UART_ReceiveChar(&huart2);
+		  if(ch=='\r' || ch=='\n'){
+		  	break;
+		  }
+		  buffer[i]=ch;
+		  i++;
+	  }
+	  buffer[i]='\0';
+	    UART_SendString(&huart2,"\r\nYou Typed: ");
+	    UART_SendString(&huart2,buffer);
+	    UART_SendString(&huart2,"\r\n");
+
   }
   /* USER CODE END 3 */
 }

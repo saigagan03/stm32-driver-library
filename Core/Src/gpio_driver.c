@@ -133,3 +133,33 @@ void GPIO_Interrupt_Init(GPIO_TypeDef*GPIOx,uint16_t Pin,uint8_t TriggerType){
 
 
 }
+void GPIO_AFInit(GPIO_TypeDef*GPIOx,uint16_t Pin,uint8_t AFNumber){
+	    uint8_t pinNumber=0;
+		uint16_t tempPin=Pin;
+		while(tempPin>1){
+			pinNumber++;
+			tempPin>>=1;
+		}
+
+		if(GPIOx==GPIOA){
+				RCC->AHB1ENR |=(1<<0);
+					    }
+		else if(GPIOx==GPIOB){
+				RCC->AHB1ENR |=(1<<1);
+						}
+		else if(GPIOx==GPIOC){
+				RCC->AHB1ENR |=(1<<2);
+						}
+		GPIOx->MODER &= ~(3<<2*(pinNumber));
+		GPIOx->MODER |= (1<<(2*(pinNumber)+1));
+
+		if(pinNumber<8){
+		GPIOx->AFR[0] &= ~(0xF<<(4*(pinNumber)));
+		GPIOx->AFR[0] |= (AFNumber<<(4*(pinNumber)));
+		}
+		else{
+			GPIOx->AFR[1] &= ~(0xF<<(4*(pinNumber-8)));
+			GPIOx->AFR[1] |= (AFNumber<<(4*(pinNumber-8)));
+		}
+
+}
