@@ -1,120 +1,77 @@
-# STM32F446 Register-Level Driver Library
+# STM32 Register-Level Driver Library
 
-## Overview
-
-This project contains a register-level driver library developed from scratch for the STM32F446RE microcontroller.
-
-The drivers are written directly using CMSIS register definitions without relying on STM32 HAL APIs for peripheral configuration.
-
-The objective of this project is to gain a deep understanding of ARM Cortex-M architecture, STM32 peripherals, and embedded software development.
+This repository contains register-level peripheral drivers developed for the STM32F446RE without using HAL peripheral drivers.
 
 ---
 
-## Hardware
+## Hardware Used
 
 - STM32 NUCLEO-F446RE
-- ARM Cortex-M4
 - STM32CubeIDE
-- CMSIS
+- ST-Link Debugger
+- PuTTY Serial Terminal
 
 ---
 
-## Drivers Implemented
+## Drivers Completed
 
-### GPIO
-
-- GPIO Output Driver
-- GPIO Input Driver
-- Pull-Up Configuration
-- Pull-Down Configuration
-- Pin Read
-- Pin Write
-- Pin Toggle
-
-### Interrupts
-
-- SYSCFG Configuration
-- EXTI Configuration
-- NVIC Configuration
-- Falling Edge Trigger
-- Rising Edge Trigger
-- Both Edge Trigger
-- Button Interrupt Project
+- ✅ RCC Driver
+- ✅ GPIO Driver
+- ✅ EXTI Driver
+- ✅ UART Driver
 
 ---
 
-## Features
+## Projects Completed
 
-- Register-level programming
-- No HAL GPIO APIs used
-- Modular driver architecture
-- Easy to extend for additional peripherals
+- ✅ Button Interrupt Project
+- ✅ UART Echo Project
+- ✅ UART Terminal Project
 
 ---
 
-## Project Structure
+## Upcoming Drivers
 
-```
+- ⬜ Timer
+- ⬜ PWM
+- ⬜ ADC
+- ⬜ SPI
+- ⬜ I²C
+- ⬜ Watchdog
+
+---
+
+## Repository Structure
+
+```text
 Core/
-    Inc/
-        gpio_driver.h
-
-    Src/
-        gpio_driver.c
-
-Drivers/
-
-Startup/
-
+├── Inc/
+│   ├── gpio_driver.h
+│   ├── rcc_driver.h
+│   └── uart_driver.h
+│
+└── Src/
+    ├── gpio_driver.c
+    ├── rcc_driver.c
+    ├── uart_driver.c
+    └── main.c
 ```
-
----
-
-## Current Progress
-
-- [x] GPIO Driver
-- [x] GPIO Input Driver
-- [x] Pull-Up / Pull-Down
-- [x] GPIO Interrupt Driver
-- [x] EXTI Driver
-- [ ] UART Driver
-- [ ] Timer Driver
-- [ ] PWM Driver
-- [ ] ADC Driver
-- [ ] SPI Driver
-- [ ] I2C Driver
-
----
-
-## Future Work
-
-- UART Driver
-- Timer Driver
-- PWM
-- ADC
-- SPI
-- I2C
-- EEPROM Driver
-- Watchdog Driver
-- RTC Driver
 
 ---
 
 ## Development Approach
 
-Every driver in this repository is developed incrementally:
-
-- Theory
-- Register Study
-- Driver Implementation
-- Practical Project
-- Testing
+- Register-level programming
+- No HAL peripheral drivers
+- Modular driver architecture
+- Reusable embedded drivers
 
 ---
 
 ## Author
 
-Sai Gagan E
+**Sai Gagan E**
 
-Electrical Engineering  
-Maulana Azad National Institute of Technology (MANIT), Bhopal
+B.Tech Electrical Engineering
+
+MANIT Bhopal
