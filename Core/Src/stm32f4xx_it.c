@@ -21,6 +21,9 @@
 #include "main.h"
 #include "stm32f4xx_it.h"
 #include"gpio_driver.h"
+#include"timer_driver.h"
+#include"rcc_driver.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -218,6 +221,17 @@ void EXTI15_10_IRQHandler(void){
 		GPIO_TogglePin(GPIOA,GPIO_PIN_5);
 		EXTI->PR =(1<<13);
 	}
+}
+//GPIO_Output_Init(GPIOA,GPIO_PIN_5);
+
+
+void TIM2_IRQHandler(void){
+
+	if(TIM2->SR & (1<<0)){
+		GPIO_TogglePin(GPIOA,GPIO_PIN_5);
+		TIM2->SR &= ~(1<<0);
+	}
+
 }
 
 /* USER CODE BEGIN 1 */

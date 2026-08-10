@@ -20,6 +20,11 @@
 #include "main.h"
 #include"gpio_driver.h"
 #include "uart_driver.h"
+#include "timer_driver.h"
+#include "rcc_driver.h"
+#include"delay.h"
+
+
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -101,45 +106,102 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-//  GPIO_Output_Init(GPIOA,GPIO_PIN_5);
+  GPIO_Output_Init(GPIOA,GPIO_PIN_5);
 //  GPIO_Input_Init(GPIOC,GPIO_PIN_13,MY_GPIO_PULLUP);
 //  GPIO_Interrupt_Init(GPIOC,GPIO_PIN_13,GPIO_FALLING_EDGE);
-  UART_Handle_t huart2;
-  huart2.Instance=USART2;
-  huart2.Init.Baudrate=115200;
-  huart2.Init.Mode=UART_MODE_TX_RX;
-  huart2.Init.Parity=UART_PARITY_NONE;
-  huart2.Init.Stopbits=UART_STOPBITS_1;
-  huart2.Init.Wordlength=UART_WORDLENGTH_8B;
-  UART_Init(&huart2);
+//  UART_Handle_t huart2;
+//  huart2.Instance=USART2;
+//  huart2.Init.Baudrate=115200;
+//  huart2.Init.Mode=UART_MODE_TX_RX;
+//  huart2.Init.Parity=UART_PARITY_NONE;
+//  huart2.Init.Stopbits=UART_STOPBITS_1;
+//  huart2.Init.Wordlength=UART_WORDLENGTH_8B;
+//  UART_Init(&huart2);
 //    send string 1 time
 //  UART_SendString(&huart2,"Hello World My Name is E Sai Gagan\r\n");
 //  receive char 1 time
 //  char c=UART_ReceiveChar(&huart2);
 //  UART_SendString(&huart2,"\r\nYou Typed: ");
 //  UART_SendChar(&huart2,c);
+  Timer_Handle_t htim2;
+  Timer_Handle_t htim3;
+
+  htim3.Instance=TIM3;
+  htim3.Init.Prescaler=83;
+  htim3.Init.Period=999999;
+
+  Timer_Init(&htim3);
+
+
+
+  htim2.Instance=TIM2;
+//  htim2.Channel=TIM2_CHANNEL_1;
+  htim2.Init.Prescaler=83;
+  htim2.Init.Period=19999;
+  htim2.Channel=TIMER_CHANNEL_1;
+  htim2.GPIOx=GPIOA;
+  htim2.Pin=GPIO_PIN_5;
+  htim2.AFno=1;
+
+  Timer_PWM_Init(&htim2);
+//  Timer_PWM_SetDuty(&htim2,100);
+  Timer_PWM_Start(&htim2);
+
+//  Timer_Init(&htim2);
+//  Timer_EnableUpdateInterrupt(&htim2,3);
+//  Timer_Start(&htim2);
+
 
   while (1)
   {
+	  for(uint32_t angle=0;angle<=180;angle++){
+		  	  Servo_SetAngle(&htim2,angle);
+		  	  Delay_ms(&htim3,10);
+
+	  }
+	  for(uint32_t angle=180;angle>0;angle--){
+		  Servo_SetAngle(&htim2,angle);
+		  Delay_ms(&htim3,10);
+	  }
+//	  Servo_SetAngle(&htim2,0);
+//	  HAL_Delay(1000);
+//	  Servo_SetAngle(&htim2,90);
+//	  HAL_Delay(1000);
+//	  Servo_SetAngle(&htim2,180);
+//	  HAL_Delay(1000);
+
+
+//	  for(uint32_t d=0;d<=100;d++){
+//		  Timer_PWM_SetDuty(&htim2,d);
+//		  Delay_ms(&htim3,10);
+//	  }
+//	  for(uint32_t d=100;d>0;d--){
+//		  Timer_PWM_SetDuty(&htim2,d);
+//		  Delay_ms(&htim3,10);
+//	  }
+//	  Timer_PWM_SetDuty(&htim2,0);
+
+//	  Delay_ms(&htim2,900);
+//	  GPIO_TogglePin(GPIOA,GPIO_PIN_5);
 //	  Receive Char many times
 //	  char c=UART_ReceiveChar(&huart2);
 //	  UART_SendString(&huart2,"\r\nYou Typed: ");
 //	  UART_SendChar(&huart2,c);
 //	  Receive String Many times
-	  char buffer[50];
-	  uint8_t i=0;
-	  while(1){
-		  char ch=UART_ReceiveChar(&huart2);
-		  if(ch=='\r' || ch=='\n'){
-		  	break;
-		  }
-		  buffer[i]=ch;
-		  i++;
-	  }
-	  buffer[i]='\0';
-	    UART_SendString(&huart2,"\r\nYou Typed: ");
-	    UART_SendString(&huart2,buffer);
-	    UART_SendString(&huart2,"\r\n");
+//	  char buffer[50];
+//	  uint8_t i=0;
+//	  while(1){
+//		  char ch=UART_ReceiveChar(&huart2);
+//		  if(ch=='\r' || ch=='\n'){
+//		  	break;
+//		  }
+//		  buffer[i]=ch;
+//		  i++;
+//	  }
+//	  buffer[i]='\0';
+//	    UART_SendString(&huart2,"\r\nYou Typed: ");
+//	    UART_SendString(&huart2,buffer);
+//	    UART_SendString(&huart2,"\r\n");
 
   }
   /* USER CODE END 3 */
