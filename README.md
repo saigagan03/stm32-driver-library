@@ -2,55 +2,28 @@
 
 ## Overview
 
-This project contains a **register-level embedded driver library developed from scratch for the STM32F446RE microcontroller**.
+This project contains a register-level driver library developed from scratch for the STM32F446RE microcontroller.
 
-The drivers are implemented using **CMSIS register definitions** without relying on STM32 HAL APIs for peripheral configuration.
+The drivers are written directly using CMSIS register definitions without relying on STM32 HAL APIs for peripheral configuration.
 
-The main objective of this project is to develop a strong understanding of:
-
-* ARM Cortex-M4 architecture
-* STM32 peripheral registers
-* Embedded C
-* Peripheral initialization
-* Interrupt handling
-* Register-level driver development
-* Hardware/software interaction
-
-Each peripheral is developed incrementally through:
-
-```text
-Theory
-   ↓
-Register Study
-   ↓
-Driver Development
-   ↓
-Hardware Testing
-   ↓
-Practical Project
-```
+The objective of this project is to gain a deep understanding of ARM Cortex-M architecture, STM32 peripherals, and embedded software development.
 
 ---
 
-# Hardware & Software
+## Hardware
 
-* **Microcontroller:** STM32F446RE
-* **Board:** STM32 NUCLEO-F446RE
-* **Core:** ARM Cortex-M4
-* **IDE:** STM32CubeIDE
-* **Programming Language:** C
-* **Register Definitions:** CMSIS
-* **Debugger:** ST-LINK
+* STM32 NUCLEO-F446RE
+* ARM Cortex-M4
+* STM32CubeIDE
+* CMSIS
 
 ---
 
 # Drivers Implemented
 
-## 1. GPIO Driver
+## GPIO Driver
 
-The GPIO driver provides register-level control of STM32 GPIO peripherals.
-
-### Features
+Features:
 
 * GPIO Output Driver
 * GPIO Input Driver
@@ -61,132 +34,148 @@ The GPIO driver provides register-level control of STM32 GPIO peripherals.
 * Pin Write
 * Pin Toggle
 * Alternate Function Configuration
-* GPIO Peripheral Clock Enable
 
 ---
 
-# 2. External Interrupt Driver
+## Interrupt Driver
 
-External interrupt functionality was implemented using the STM32 interrupt architecture.
+Features:
 
-### Features
+* SYSCFG Configuration
+* EXTI Configuration
+* NVIC Configuration
+* Falling Edge Trigger
+* Rising Edge Trigger
+* Both Edge Trigger
+* External Button Interrupt Handling
 
-* SYSCFG configuration
-* EXTI configuration
-* NVIC configuration
-* Rising-edge detection
-* Falling-edge detection
-* Both-edge detection
-* External button interrupt handling
-
-### Project Implemented
+### Project Implemented:
 
 **GPIO Button Interrupt Project**
 
-```text
-Push Button
-     ↓
-   GPIO
-     ↓
-   EXTI
-     ↓
-   NVIC
-     ↓
-Interrupt Handler
-     ↓
-GPIO Response
-```
-
-The project was hardware-tested using the STM32F446RE.
+* Configured external interrupt using EXTI
+* Handled button press event through NVIC
+* Tested interrupt functionality using GPIO output
 
 ---
 
-# 3. UART Driver
+## UART Driver
 
-A register-level UART driver was developed without using STM32 HAL peripheral APIs.
+Implemented a register-level UART driver without using STM32 HAL APIs.
 
-### Features
+Features:
 
 * UART peripheral initialization
 * Register-level UART configuration
-* Baud-rate configuration
-* TX/RX configuration
 * Polling-based communication
 * Character transmission
 * String transmission
 * Character reception
 * UART Echo functionality
 
-### Implemented APIs
+Implemented APIs:
 
 ```c
-UART_Init();
+void UART_SendChar(char data);
 
-UART_SendChar();
+void UART_SendString(char *str);
 
-UART_SendString();
-
-UART_ReceiveChar();
+char UART_ReceiveChar(void);
 ```
 
 ---
 
-# 4. UART Terminal Project
+# UART Terminal Project
 
 A polling-based UART terminal communication project was developed using the STM32F446RE.
 
-### Features
+## Features
 
-* STM32 ↔ PC serial communication
-* Character transmission
-* String transmission
-* Character reception
-* UART echo
-* Serial terminal testing
+* STM32 communicates with PC terminal through UART
+* Data transmission without interrupts
+* Character-by-character communication
+* Received characters are echoed back to terminal
 
-### Communication Flow
+## Implemented Functions
 
-```text
-       PC Terminal
-            │
-            │ Character
-            ▼
-     STM32 UART RX
-            │
-            ▼
-     STM32 UART TX
-            │
-            │ Echo
-            ▼
-       PC Terminal
+### UART Send Character
+
+```c
+UART_SendChar()
 ```
 
-The UART communication was tested using a PC serial terminal.
+Used for transmitting a single character through UART terminal.
 
 ---
 
-# 5. Timer Driver
+### UART Send String
 
-A register-level timer driver was developed for STM32 timers.
+```c
+UART_SendString()
+```
 
-Currently tested with:
+Used for transmitting complete strings through UART terminal.
 
-* TIM2
-* TIM3
+Example:
 
-### Features
+```text
+Hello STM32
+```
+
+---
+
+### UART Receive Character
+
+```c
+UART_ReceiveChar()
+```
+
+Used for receiving characters from the PC terminal.
+
+---
+
+### UART Echo Project
+
+Working:
+
+```text
+PC Terminal
+     |
+     |  Character
+     |
+     v
+ STM32 UART Receiver
+     |
+     |
+     v
+ STM32 UART Transmitter
+     |
+     |
+     v
+PC Terminal
+```
+
+Any character entered in the serial terminal is received by STM32 and transmitted back using UART.
+
+---
+
+# Timer Driver
+
+A register-level timer driver was developed and tested using TIM2 and TIM3.
+
+Features:
 
 * Timer peripheral clock enable
 * Prescaler configuration
-* Auto-reload register configuration
+* Period/ARR configuration
 * Counter reset
 * Counter reading
-* Timer start
-* Timer stop
+* Timer start/stop
 * Update interrupt configuration
 * NVIC timer interrupt configuration
+* Timer-based delay generation
 
-### Implemented APIs
+Implemented APIs:
 
 ```c
 Timer_Init();
@@ -200,97 +189,29 @@ Timer_ResetCounter();
 Timer_GetCounter();
 
 Timer_EnableUpdateInterrupt();
-```
 
----
-
-# 6. Timer-Based Delay Driver
-
-A timer-based millisecond delay function was developed using the timer counter.
-
-### Features
-
-* Register-level timer delay
-* Configurable timer prescaler
-* Millisecond delay generation
-* Reusable delay driver
-
-### API
-
-```c
 Delay_ms();
 ```
 
-A separate timer can be used for delay generation while another timer operates as a PWM generator.
-
 ---
 
-# 7. Timer Interrupt Project
+# PWM Driver
 
-Periodic timer interrupts were implemented using:
+The timer driver was extended to support PWM generation.
 
-* TIM2/TIM3
-* Update interrupt
-* DIER
-* SR
-* NVIC
-* Timer interrupt handlers
+Features:
 
-### Concept
-
-```text
-Timer Counter
-      ↓
-     ARR
-      ↓
-Update Event
-      ↓
-     UIF
-      ↓
-    NVIC
-      ↓
-Interrupt Handler
-```
-
-The periodic interrupt functionality was hardware-tested.
-
----
-
-# 8. PWM Driver
-
-PWM functionality was implemented using the STM32 timer peripheral in **PWM Mode 1**.
-
-### PWM Features
-
-* PWM generation
-* Prescaler configuration
+* PWM Mode 1
+* Duty-cycle control
 * ARR configuration
 * CCR configuration
-* PWM Mode 1
 * Output Compare preload
 * Output channel enable
 * Output polarity configuration
-* Duty-cycle control
-* PWM channel generalization
+* PWM channels 1–4
+* Generalized GPIO Alternate Function configuration
 
-The driver was generalized to support:
-
-```text
-TIMx Channel 1
-TIMx Channel 2
-TIMx Channel 3
-TIMx Channel 4
-```
-
-### PWM Duty Cycle
-
-```text
-Duty Cycle = HIGH Time / Total Period × 100
-```
-
-The compare register is updated according to the requested duty cycle.
-
-### API
+Implemented APIs:
 
 ```c
 Timer_PWM_Init();
@@ -304,44 +225,36 @@ Timer_PWM_SetDuty();
 
 ---
 
-# 9. LED PWM Brightness Control Project
+# PWM LED Brightness Project
 
-PWM was applied to an LED to control its brightness.
+PWM was used to control LED brightness by varying the duty cycle.
 
-### Working
+The project implements a smooth brightness transition by gradually increasing and decreasing the PWM duty cycle.
 
 ```text
-STM32 Timer
-     ↓
-    PWM
-     ↓
+Timer
+  |
+  v
+ PWM
+  |
+  v
 Duty Cycle
-     ↓
-   LED
-     ↓
-Brightness
+  |
+  v
+ LED Brightness
 ```
-
-The duty cycle was gradually increased and decreased to create a smooth brightness variation.
 
 The project was hardware-tested using the STM32F446RE.
 
 ---
 
-# 10. Servo Motor Control Project
+# Servo Motor Control Project
 
-PWM was further applied to servo motor control.
+The PWM driver was further used to implement servo motor control.
 
-Unlike simple LED brightness control, a servo requires a specific PWM **frequency and pulse width**.
+The timer was configured for a 50 Hz PWM signal with a 20 ms period.
 
-The timer was configured for approximately:
-
-```text
-PWM Frequency = 50 Hz
-PWM Period    = 20 ms
-```
-
-The servo angle was mapped to the pulse width:
+Servo angle was mapped to pulse width:
 
 ```text
 0°   → 1.0 ms
@@ -349,150 +262,27 @@ The servo angle was mapped to the pulse width:
 180° → 2.0 ms
 ```
 
-### Servo Angle Mapping
-
-```text
-        Servo_SetAngle()
-               │
-               ▼
-        Requested Angle
-          0° → 180°
-               │
-               ▼
-        Pulse Width
-       1 ms → 2 ms
-               │
-               ▼
-             CCR
-               │
-               ▼
-             PWM
-```
-
-### API
+Implemented API:
 
 ```c
 Servo_SetAngle();
 ```
 
-The resulting `CCR` values were verified using the STM32 debugger.
+A software angle sweep from 0° to 180° and back was also implemented.
 
-A software sweep was also implemented:
-
-```c
-for(uint32_t angle = 0; angle <= 180; angle++)
-{
-    Servo_SetAngle(&htim2, angle);
-    Delay_ms(&htim3, 10);
-}
-
-for(uint32_t angle = 180; angle > 0; angle--)
-{
-    Servo_SetAngle(&htim2, angle);
-    Delay_ms(&htim3, 10);
-}
-```
+The corresponding CCR values were verified using the STM32 debugger.
 
 ---
 
-# Current Phase Progress
+# Features
 
-## Phase 4 — Register-Level Driver Development
-
-| Lesson | Topic                         | Status |
-| -----: | ----------------------------- | :----: |
-|      1 | Clock Tree                    |    ✅   |
-|      2 | RCC Registers                 |    ✅   |
-|      3 | Peripheral Clock Enable       |    ✅   |
-|      4 | GPIO Driver Enhancement       |    ✅   |
-|      5 | GPIO Input Driver             |    ✅   |
-|      6 | GPIO Output Driver            |    ✅   |
-|      7 | Pull-Up / Pull-Down           |    ✅   |
-|      8 | GPIO Interrupt Pins           |    ✅   |
-|      9 | External Interrupt Theory     |    ✅   |
-|     10 | EXTI Registers                |    ✅   |
-|     11 | Button Interrupt Project      |    ✅   |
-|     12 | UART Theory                   |    ✅   |
-|     13 | UART Registers                |    ✅   |
-|     14 | UART Driver Development       |    ✅   |
-|     15 | UART Terminal Project         |    ✅   |
-|     16 | Timer Theory                  |    ✅   |
-|     17 | Timer Registers               |    ✅   |
-|     18 | Delay Functions               |    ✅   |
-|     19 | Periodic Interrupt Project    |    ✅   |
-|     20 | PWM Theory                    |    ✅   |
-|     21 | PWM LED Brightness Project    |    ✅   |
-|     22 | Servo Motor Control Project   |    ✅   |
-|     23 | ADC Theory                    |   🔜   |
-|     24 | ADC Registers                 |   🔜   |
-|     25 | Potentiometer Reading Project |   🔜   |
-|     26 | SPI Theory                    |   🔜   |
-|     27 | SPI Registers                 |   🔜   |
-|     28 | SPI Driver Development        |   🔜   |
-|     29 | SPI Sensor Interface Project  |   🔜   |
-|     30 | I²C Theory                    |   🔜   |
-|     31 | I²C Registers                 |   🔜   |
-|     32 | I²C Driver Development        |   🔜   |
-|     33 | I²C EEPROM Project            |   🔜   |
-|     34 | Watchdog Timer                |   🔜   |
-
----
-
-# Completed Projects
-
-### 1. GPIO Button Interrupt Project
-
-Implemented:
-
-* GPIO
-* SYSCFG
-* EXTI
-* NVIC
-* Interrupt handler
-
----
-
-### 2. UART Terminal Project
-
-Implemented:
-
-* UART TX
-* UART RX
-* Character communication
-* String communication
-* Echo functionality
-
----
-
-### 3. Timer Periodic Interrupt Project
-
-Implemented:
-
-* Timer configuration
-* Update interrupts
-* NVIC
-* Periodic interrupt generation
-
----
-
-### 4. PWM LED Brightness Project
-
-Implemented:
-
-* Timer PWM
-* Duty-cycle control
-* LED brightness control
-
----
-
-### 5. Servo Motor Control Project
-
-Implemented:
-
-* 50 Hz PWM
-* Pulse-width based angle control
-* Generalized timer channel support
-* Servo angle sweep
+* Register-level programming
+* No STM32 HAL peripheral APIs used
+* Direct CMSIS register access
+* Modular driver architecture
+* Hardware-tested drivers
+* Timer and PWM channel generalization
+* Easy extension for additional peripherals
 
 ---
 
@@ -500,8 +290,10 @@ Implemented:
 
 ```text
 STM32F446_Register_Driver/
+
 │
 ├── Core/
+│   │
 │   ├── Inc/
 │   │   ├── gpio_driver.h
 │   │   ├── uart_driver.h
@@ -520,105 +312,148 @@ STM32F446_Register_Driver/
 │
 ├── Startup/
 │
-├── STM32F446RETX_FLASH.ld
-│
 └── README.md
 ```
 
 ---
 
-# Development Philosophy
+# Completed Projects
 
-The project follows a **register-first approach**.
+## 1. GPIO Interrupt Button Project
 
-Instead of directly using high-level HAL APIs, each peripheral is understood and implemented from its hardware registers.
+Implemented external interrupt handling using:
 
-For every peripheral:
+* SYSCFG
+* EXTI
+* NVIC
 
-```text
-1. Understand peripheral operation
-           ↓
-2. Study reference manual
-           ↓
-3. Identify required registers
-           ↓
-4. Understand individual bits
-           ↓
-5. Implement driver
-           ↓
-6. Test registers using debugger
-           ↓
-7. Build practical project
-           ↓
-8. Generalize driver
-```
+Features:
 
-This approach is intended to build a strong foundation for embedded firmware development.
+* Button press detection
+* Interrupt triggering
+* GPIO response after interrupt event
+
+---
+
+## 2. UART Terminal Communication Project
+
+Implemented UART communication using polling method.
+
+Features:
+
+* UART initialization from registers
+* Send character function
+* Send string function
+* Receive character function
+* Echo application
+
+Communication tested using serial terminal.
+
+---
+
+## 3. Timer Periodic Interrupt Project
+
+Implemented periodic timer interrupts using the STM32 timer peripheral.
+
+Features:
+
+* Timer configuration
+* Update interrupt
+* NVIC configuration
+* Periodic interrupt generation
+
+---
+
+## 4. PWM LED Brightness Project
+
+Implemented PWM-based LED brightness control.
+
+Features:
+
+* PWM generation
+* Duty-cycle control
+* Smooth brightness variation
+
+---
+
+## 5. Servo Motor Control Project
+
+Implemented servo angle control using timer PWM.
+
+Features:
+
+* 50 Hz PWM generation
+* Pulse-width based angle control
+* 0°–180° angle mapping
+* Software servo sweep
+
+---
+
+# Current Progress
+
+* [x] GPIO Driver
+* [x] GPIO Input Driver
+* [x] Pull-Up / Pull-Down Configuration
+* [x] GPIO Interrupt Driver
+* [x] EXTI Driver
+* [x] NVIC Configuration
+* [x] UART Driver
+* [x] UART Polling-Based Terminal Project
+* [x] Timer Driver
+* [x] Timer-Based Delay
+* [x] Timer Periodic Interrupt Project
+* [x] PWM Driver
+* [x] PWM LED Brightness Project
+* [x] Servo Motor Control Project
+* [ ] ADC Driver
+* [ ] SPI Driver
+* [ ] I2C Driver
+
+---
+
+# Future Work
+
+Planned drivers and projects:
+
+* ADC Driver
+* Potentiometer Reading Project
+* SPI Driver
+* SPI Sensor Interface Project
+* I2C Driver
+* I2C EEPROM Project
+* Watchdog Driver
+* RTC Driver
+
+---
+
+# Development Approach
+
+Every driver in this repository is developed incrementally:
+
+1. Theory Understanding
+2. Register Study
+3. Driver Implementation
+4. Hardware Testing
+5. Practical Application Project
 
 ---
 
 # Learning Outcomes
 
-Through this project, the following skills are being developed:
+Through this project:
 
-* Embedded C programming
-* ARM Cortex-M4 architecture
-* STM32 peripheral architecture
-* CMSIS register-level programming
-* GPIO configuration
-* Interrupt handling
-* NVIC configuration
-* UART communication
-* Timer configuration
-* Timer interrupts
-* PWM generation
-* Duty-cycle control
-* Servo motor control
-* Modular driver development
-* Debugger-based register verification
-* Hardware/software integration
+* Understanding ARM Cortex-M4 architecture
+* Learning STM32 peripheral registers
+* Writing reusable embedded drivers
+* Understanding hardware abstraction layers
+* Developing embedded firmware without HAL dependency
 
 ---
 
-# Upcoming Development
-
-The next milestone is **ADC**.
-
-Planned progression:
-
-```text
-ADC Theory
-    ↓
-ADC Registers
-    ↓
-ADC Driver
-    ↓
-Potentiometer Reading
-    ↓
-UART ADC Monitoring
-```
-
-Future peripherals:
-
-```text
-ADC
- ↓
-SPI
- ↓
-I²C
- ↓
-EEPROM
- ↓
-Watchdog
-```
-
----
-
-# Author
+## Author
 
 **Sai Gagan E**
 
 B.Tech Electrical Engineering
 
-**Maulana Azad National Institute of Technology (MANIT), Bhopal**
-
+MANIT Bhopal
