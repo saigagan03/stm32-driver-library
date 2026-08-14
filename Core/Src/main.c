@@ -23,6 +23,7 @@
 #include "timer_driver.h"
 #include "rcc_driver.h"
 #include"delay.h"
+#include"adc_driver.h"
 
 
 
@@ -106,7 +107,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  GPIO_Output_Init(GPIOA,GPIO_PIN_5);
+//  GPIO_Output_Init(GPIOA,GPIO_PIN_5);
 //  GPIO_Input_Init(GPIOC,GPIO_PIN_13,MY_GPIO_PULLUP);
 //  GPIO_Interrupt_Init(GPIOC,GPIO_PIN_13,GPIO_FALLING_EDGE);
 //  UART_Handle_t huart2;
@@ -123,45 +124,63 @@ int main(void)
 //  char c=UART_ReceiveChar(&huart2);
 //  UART_SendString(&huart2,"\r\nYou Typed: ");
 //  UART_SendChar(&huart2,c);
-  Timer_Handle_t htim2;
-  Timer_Handle_t htim3;
+//  Timer_Handle_t htim2;
+//  Timer_Handle_t htim3;
+//
+//  htim3.Instance=TIM3;
+//  htim3.Init.Prescaler=83;
+//  htim3.Init.Period=999999;
+//
+//  Timer_Init(&htim3);
 
-  htim3.Instance=TIM3;
-  htim3.Init.Prescaler=83;
-  htim3.Init.Period=999999;
-
-  Timer_Init(&htim3);
 
 
-
-  htim2.Instance=TIM2;
-//  htim2.Channel=TIM2_CHANNEL_1;
-  htim2.Init.Prescaler=83;
-  htim2.Init.Period=19999;
-  htim2.Channel=TIMER_CHANNEL_1;
-  htim2.GPIOx=GPIOA;
-  htim2.Pin=GPIO_PIN_5;
-  htim2.AFno=1;
-
-  Timer_PWM_Init(&htim2);
+//  htim2.Instance=TIM2;
+////  htim2.Channel=TIM2_CHANNEL_1;
+//  htim2.Init.Prescaler=83;
+//  htim2.Init.Period=19999;
+//  htim2.Channel=TIMER_CHANNEL_1;
+//  htim2.GPIOx=GPIOA;
+//  htim2.Pin=GPIO_PIN_5;
+//  htim2.AFno=1;
+//
+//  Timer_PWM_Init(&htim2);
 //  Timer_PWM_SetDuty(&htim2,100);
-  Timer_PWM_Start(&htim2);
+//  Timer_PWM_Start(&htim2);
 
 //  Timer_Init(&htim2);
 //  Timer_EnableUpdateInterrupt(&htim2,3);
 //  Timer_Start(&htim2);
 
+  ADC_Handle_t hadc1;
+  hadc1.Instance=ADC1;
+  hadc1.Conversion_no=2;
+  hadc1.Init.Conv1_Chno=ADC_CHANNEL_17;
+  hadc1.Init1.Conv1_SampleTime=ADC_SampleTime_480_CYCLES;
+  hadc1.Init2.Conv1_GPIOx=NULL;
+  hadc1.Init2.Conv1_Pin=0;
+  hadc1.Init.Conv2_Chno=ADC_CHANNEL_16;
+  hadc1.Init1.Conv2_SampleTime=ADC_SampleTime_480_CYCLES;
+  hadc1.Init2.Conv2_GPIOx=NULL;
+  hadc1.Init2.Conv2_Pin=0;
+  ADC_Init(&hadc1);
+  ADC_Start(&hadc1);
+  uint16_t adc_value[2];
+  ADC_Read(&hadc1,adc_value);
+
+
+
 
   while (1)
   {
-	  for(uint32_t angle=0;angle<=180;angle++){
-		  	  Servo_SetAngle(&htim2,angle);
-		  	  Delay_ms(&htim3,10);
-
-	  }
-	  for(uint32_t angle=180;angle>0;angle--){
-		  Servo_SetAngle(&htim2,angle);
-		  Delay_ms(&htim3,10);
+//	  for(uint32_t angle=0;angle<=180;angle++){
+//		  	  Servo_SetAngle(&htim2,angle);
+//		  	  Delay_ms(&htim3,10);
+//
+//	  }
+//	  for(uint32_t angle=180;angle>0;angle--){
+//		  Servo_SetAngle(&htim2,angle);
+//		  Delay_ms(&htim3,10);
 	  }
 //	  Servo_SetAngle(&htim2,0);
 //	  HAL_Delay(1000);
@@ -203,7 +222,7 @@ int main(void)
 //	    UART_SendString(&huart2,buffer);
 //	    UART_SendString(&huart2,"\r\n");
 
-  }
+//  }
   /* USER CODE END 3 */
 }
 

@@ -24,4 +24,6 @@ void GPIO_Interrupt_Init(GPIO_TypeDef*GPIOx,uint16_t Pin,uint8_t TriggerType);
 
 void GPIO_AFInit(GPIO_TypeDef*GPIOx,uint16_t TX_Pin,uint8_t AFNumber);
 
+void GPIO_Analog_Init(GPIO_TypeDef* GPIOx,uint16_t Pin);
+
 #endif /* INC_GPIO_DRIVER_H_ */
