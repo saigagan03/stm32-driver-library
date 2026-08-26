@@ -24,6 +24,7 @@
 #include "rcc_driver.h"
 #include"delay.h"
 #include"adc_driver.h"
+#include"spi_driver.h"
 
 
 
@@ -152,27 +153,42 @@ int main(void)
 //  Timer_EnableUpdateInterrupt(&htim2,3);
 //  Timer_Start(&htim2);
 
-  ADC_Handle_t hadc1;
-  hadc1.Instance=ADC1;
-  hadc1.Conversion_no=2;
-  hadc1.Init.Conv1_Chno=ADC_CHANNEL_17;
-  hadc1.Init1.Conv1_SampleTime=ADC_SampleTime_480_CYCLES;
-  hadc1.Init2.Conv1_GPIOx=NULL;
-  hadc1.Init2.Conv1_Pin=0;
-  hadc1.Init.Conv2_Chno=ADC_CHANNEL_16;
-  hadc1.Init1.Conv2_SampleTime=ADC_SampleTime_480_CYCLES;
-  hadc1.Init2.Conv2_GPIOx=NULL;
-  hadc1.Init2.Conv2_Pin=0;
-  ADC_Init(&hadc1);
-  ADC_Start(&hadc1);
-  uint16_t adc_value[2];
-  ADC_Read(&hadc1,adc_value);
+//  ADC_Handle_t hadc1;
+//  hadc1.Instance=ADC1;
+//  hadc1.Conversion_no=2;
+//  hadc1.Init.Conv1_Chno=ADC_CHANNEL_17;
+//  hadc1.Init1.Conv1_SampleTime=ADC_SampleTime_480_CYCLES;
+//  hadc1.Init2.Conv1_GPIOx=NULL;
+//  hadc1.Init2.Conv1_Pin=0;
+//  hadc1.Init.Conv2_Chno=ADC_CHANNEL_16;
+//  hadc1.Init1.Conv2_SampleTime=ADC_SampleTime_480_CYCLES;
+//  hadc1.Init2.Conv2_GPIOx=NULL;
+//  hadc1.Init2.Conv2_Pin=0;
+//  ADC_Init(&hadc1);
+//  ADC_Start(&hadc1);
+//  uint16_t adc_value[2];
+//  ADC_Read(&hadc1,adc_value);
+ uint8_t buffer[]={0x55, 0xAA, 0xA5};
+
+  SPI_Handle_t hspi1;
+  hspi1.Instance=SPI1;
+  hspi1.Init.Mode=SPI_MODE_MASTER;
+  hspi1.Init.CPHA=SPI_CPHA_LOW;
+  hspi1.Init.CPOL=SPI_CPOL_LOW;
+  hspi1.Init.BaudRatePrescaler=SPI_BR_DIV8;
+  hspi1.Init.BitOrder=SPI_LSBFIRST;
+  hspi1.Init.NSS=SPI_SOFTWARE_NSS;
+
+  SPI_Init(&hspi1);
+  SPI_Transmit(&hspi1,buffer,3);
+
 
 
 
 
   while (1)
   {
+
 //	  for(uint32_t angle=0;angle<=180;angle++){
 //		  	  Servo_SetAngle(&htim2,angle);
 //		  	  Delay_ms(&htim3,10);
