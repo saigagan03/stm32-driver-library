@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include <stdio.h>
 #include"gpio_driver.h"
 #include "uart_driver.h"
 #include "timer_driver.h"
@@ -108,9 +109,9 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-//  GPIO_Output_Init(GPIOA,GPIO_PIN_5);
-//  GPIO_Input_Init(GPIOC,GPIO_PIN_13,MY_GPIO_PULLUP);
-//  GPIO_Interrupt_Init(GPIOC,GPIO_PIN_13,GPIO_FALLING_EDGE);
+  GPIO_Output_Init(GPIOA,GPIO_PIN_5);
+  GPIO_Input_Init(GPIOC,GPIO_PIN_13,MY_GPIO_PULLUP);
+  GPIO_Interrupt_Init(GPIOC,GPIO_PIN_13,GPIO_FALLING_EDGE);
 //  UART_Handle_t huart2;
 //  huart2.Instance=USART2;
 //  huart2.Init.Baudrate=115200;
@@ -121,44 +122,45 @@ int main(void)
 //  UART_Init(&huart2);
 //    send string 1 time
 //  UART_SendString(&huart2,"Hello World My Name is E Sai Gagan\r\n");
-//  receive char 1 time
+////  receive char 1 time
 //  char c=UART_ReceiveChar(&huart2);
 //  UART_SendString(&huart2,"\r\nYou Typed: ");
 //  UART_SendChar(&huart2,c);
 //  Timer_Handle_t htim2;
-//  Timer_Handle_t htim3;
+////  Timer_Handle_t htim3;
+////
+////  htim3.Instance=TIM3;
+////  htim3.Init.Prescaler=83;
+////  htim3.Init.Period=999999;
+////
+////  Timer_Init(&htim3);
 //
-//  htim3.Instance=TIM3;
-//  htim3.Init.Prescaler=83;
-//  htim3.Init.Period=999999;
 //
-//  Timer_Init(&htim3);
-
-
-
+//
 //  htim2.Instance=TIM2;
-////  htim2.Channel=TIM2_CHANNEL_1;
-//  htim2.Init.Prescaler=83;
-//  htim2.Init.Period=19999;
-//  htim2.Channel=TIMER_CHANNEL_1;
-//  htim2.GPIOx=GPIOA;
-//  htim2.Pin=GPIO_PIN_5;
-//  htim2.AFno=1;
+//////  htim2.Channel=TIM2_CHANNEL_1;
+//  htim2.Init.Prescaler=8399;
+//  htim2.Init.Period=9999;
+////  htim2.Channel=TIMER_CHANNEL_1;
+////  htim2.GPIOx=GPIOA;
+////  htim2.Pin=GPIO_PIN_5;
+////  htim2.AFno=1;
+////
+////  Timer_PWM_Init(&htim2);
+////  Timer_PWM_SetDuty(&htim2,100);
+////  Timer_PWM_Start(&htim2);
 //
-//  Timer_PWM_Init(&htim2);
-//  Timer_PWM_SetDuty(&htim2,100);
-//  Timer_PWM_Start(&htim2);
-
 //  Timer_Init(&htim2);
-//  Timer_EnableUpdateInterrupt(&htim2,3);
+//  Timer_EnableUpdateInterrupt(&htim2);
 //  Timer_Start(&htim2);
+
 
 //  ADC_Handle_t hadc1;
 //  hadc1.Instance=ADC1;
-//  hadc1.Conversion_no=2;
-//  hadc1.Init.Conv1_Chno=ADC_CHANNEL_17;
+//  hadc1.Conversion_no=1;
+//  hadc1.Init.Conv1_Chno=ADC_CHANNEL_0;
 //  hadc1.Init1.Conv1_SampleTime=ADC_SampleTime_480_CYCLES;
-//  hadc1.Init2.Conv1_GPIOx=NULL;
+//  hadc1.Init2.Conv1_GPIOx=GPIOA;
 //  hadc1.Init2.Conv1_Pin=0;
 //  hadc1.Init.Conv2_Chno=ADC_CHANNEL_16;
 //  hadc1.Init1.Conv2_SampleTime=ADC_SampleTime_480_CYCLES;
@@ -166,10 +168,10 @@ int main(void)
 //  hadc1.Init2.Conv2_Pin=0;
 //  ADC_Init(&hadc1);
 //  ADC_Start(&hadc1);
-//  uint16_t adc_value[2];
+//  uint16_t adc_value[1];
 //  ADC_Read(&hadc1,adc_value);
  uint8_t buffer[]={0x55, 0xAA, 0xA5};
-
+//
   SPI_Handle_t hspi1;
   hspi1.Instance=SPI1;
   hspi1.Init.Mode=SPI_MODE_MASTER;
@@ -180,7 +182,7 @@ int main(void)
   hspi1.Init.NSS=SPI_SOFTWARE_NSS;
 
   SPI_Init(&hspi1);
-  SPI_Transmit(&hspi1,buffer,3);
+//  SPI_Transmit(&hspi1,buffer,3);
 
 
 
@@ -188,6 +190,23 @@ int main(void)
 
   while (1)
   {
+	  SPI_Transmit(&hspi1,buffer,3);
+//	    UART_SendString(&huart2, "HELLO\r\n");
+//
+//	    for(volatile uint32_t i = 0; i < 500000; i++);
+//	  ADC_Read(&hadc1, adc_value);
+//
+//	  char buffer[30];
+//
+//	  sprintf(buffer, "ADC Value: %u\r\n", adc_value[0]);
+//
+//	  UART_SendString(&huart2, buffer);
+//
+//	  HAL_Delay(500);
+//	  UART_SendString(&huart2,"Hello World My Name is E Sai Gagan\r\n");
+//	  GPIO_TogglePin(GPIOA,GPIO_PIN_5);
+//	  HAL_Delay(100);
+//  }
 
 //	  for(uint32_t angle=0;angle<=180;angle++){
 //		  	  Servo_SetAngle(&htim2,angle);
@@ -197,7 +216,7 @@ int main(void)
 //	  for(uint32_t angle=180;angle>0;angle--){
 //		  Servo_SetAngle(&htim2,angle);
 //		  Delay_ms(&htim3,10);
-	  }
+//	  }
 //	  Servo_SetAngle(&htim2,0);
 //	  HAL_Delay(1000);
 //	  Servo_SetAngle(&htim2,90);
@@ -238,7 +257,7 @@ int main(void)
 //	    UART_SendString(&huart2,buffer);
 //	    UART_SendString(&huart2,"\r\n");
 
-//  }
+  }
   /* USER CODE END 3 */
 }
 
